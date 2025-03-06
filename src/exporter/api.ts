@@ -44,6 +44,16 @@ export async function reqAPIWithBackoff<T> ({ func, args, count }: reqAPIWithBac
       switch (error.code) {
         case APIErrorCode.RateLimited:
         case APIErrorCode.InternalServerError:
+        case ClientErrorCode.ResponseError:
+        case ClientErrorCode.RequestTimeout:
+          if (debug) {
+            console.log(`reqAPIWithBackoff backoff(${count}) -- error code: ${error.code}`)
+          }
+          if (waitTimeSecAfterLimit > 0) {
+            await new Promise(resolve => setTimeout(resolve, waitTimeSecAfterLimit))
+          }
+          res = await reqAPIWithBackoff<T>({ func, args, count: count-- })
+          break
         case APIErrorCode.ValidationError:
           if (error.message.startsWith('The start_cursor provided is invalid:')) {
             if (debug) {
@@ -54,16 +64,6 @@ export async function reqAPIWithBackoff<T> ({ func, args, count }: reqAPIWithBac
             }
             res = await reqAPIWithBackoff<T>({ func, args, count: count-- })
           }
-          break
-        case ClientErrorCode.ResponseError:
-        case ClientErrorCode.RequestTimeout:
-          if (debug) {
-            console.log(`reqAPIWithBackoff backoff(${count}) -- error code: ${error.code}`)
-          }
-          if (waitTimeSecAfterLimit > 0) {
-            await new Promise(resolve => setTimeout(resolve, waitTimeSecAfterLimit))
-          }
-          res = await reqAPIWithBackoff<T>({ func, args, count: count-- })
           break
       }
     }
