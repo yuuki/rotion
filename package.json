@@ -27,7 +27,10 @@
   "files": [
     "LICENSE",
     "README.md",
-    "dist/*"
+    "dist/*",
+    "src/*",
+    "tsconfig.json",
+    "tsconfig.exporter.json"
   ],
   "author": {
     "name": "Tomohisa Oda",
