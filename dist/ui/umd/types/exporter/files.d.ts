@@ -1,0 +1,27 @@
+import type { VideoBlockObjectResponseEx, EmbedBlockObjectResponseEx, HtmlMetadata, ImagePathWithSize } from './types.js';
+export declare const findLocationUrl: (rawHeaders: string[]) => string;
+export declare function getHTTP(reqUrl: string): Promise<string>;
+export declare function getJson<T>(reqUrl: string): Promise<T>;
+export declare const atoh: (a: string) => string;
+export declare const createDirWhenNotfound: (dir: string) => Promise<void>;
+export declare function readCache<T>(f: string): Promise<T>;
+export declare function writeCache(f: string, data: unknown): Promise<void>;
+export declare function isAvailableCache(f: string, d?: number): Promise<boolean>;
+export declare const sleep: (m: number) => Promise<unknown>;
+export declare function saveFile(fileUrl: string, prefix: string): Promise<{
+    src: string;
+    size: number;
+}>;
+export declare const saveImage: (imageUrl: string, prefix: string) => Promise<ImagePathWithSize>;
+export declare const findHtmlByRegexp: (regexps: RegExp[], html: string) => string | null;
+export declare const titleRegexps: RegExp[];
+export declare const descRegexps: RegExp[];
+export declare const imageRegexps: RegExp[];
+export declare const iconRegexps: RegExp[];
+export declare const findImage: (html: string) => string | null;
+export declare const getHtmlMeta: (reqUrl: string, httpFunc?: (reqUrl: string) => Promise<string>) => Promise<HtmlMetadata>;
+export declare const getVideoHtml: (block: VideoBlockObjectResponseEx) => Promise<string>;
+export declare function getSlideshareOembedUrl(reqUrl: string, httpFunc?: (reqUrl: string) => Promise<string>): Promise<string>;
+export declare const getEmbedHtml: (block: EmbedBlockObjectResponseEx) => Promise<string>;
+export declare const isEmpty: (obj: Object) => boolean;
+export declare function getVideoType(uri: string): "video/mp4" | "video/webm" | "video/ogg" | "";
